@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>Users</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/users.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+  <body>
+
+    <div id="content"></div>
+
+    <script src="js/jquery-1.7.2.js"></script>
+    <script src="js/jquery.dispatch.js"></script>
+    <script src="bootstrap/js/bootstrap-button.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="modules.js"></script>
+    <script>
+      var app = require('ui/app');
+      app.init();
+
+      var session = require('session');
+      session.on('change', function (userCtx) {
+        if (userCtx.name) {
+          $('#session').html(
+            '<ul class="nav">' +
+              '<li><a href="/users/#/view/' + encodeURIComponent(userCtx.name) + '">' + userCtx.name + '</a></li>' +
+              '<li class="divider-vertical"></li>' +
+              '<li><a id="signout-link" href="#"><i class="icon-signout"></i> Sign Out</a></li>' +
+            '</ul>'
+          );
+        }
+        else {
+          $('#session').html(
+            '<ul class="nav">' +
+              '<li><a href="/users/#/signup">Create account</a></li>' +
+              '<li class="divider-vertical"></li>' +
+              '<li><a id="signin-link" href="/users/#/login"><i class="icon-signin"></i> Sign in</a></li>' +
+            '</ul>'
+          );
+        }
+      });
+      $('#session').on('click', '#signin-link', function (ev) {
+        if (window.location.hash !== '#/login' &&
+            window.location.hash !== '#/signup') {
+          ev.preventDefault();
+          window.location = $('#signin-link').attr('href') + '/' +
+            encodeURIComponent(window.location);
+          return false;
+        }
+      });
+      $('#session').on('click', '#signout-link', function (ev) {
+        ev.preventDefault();
+        session.logout(function (err) {
+          if (!err) {
+            window.location.reload();
+          }
+        });
+        return false;
+      });
+      session.info();
+    </script>
+
+  </body>
+</html>

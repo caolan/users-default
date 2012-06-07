@@ -1,0 +1,13 @@
+{
+    "name": "users-default",
+    "version": "0.0.1",
+    "description": "Default themed user profiles app",
+    "attachments": [
+        "index.html",
+        "css"
+    ],
+    "dependencies": {
+        "users-core": null,
+        "attachments": null
+    }
+}
